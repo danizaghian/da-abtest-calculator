@@ -1,14 +1,14 @@
 <template>
-  <HelloWorld msg="A/B Test" />
+  <ABTest msg="A/B Test" />
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import ABTest from "./components/ABTest.vue";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    ABTest,
   },
 };
 </script>

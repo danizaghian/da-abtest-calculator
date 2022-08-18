@@ -1,9 +1,12 @@
 <template>
-  <div class="hello">
-    <div>
-      <h1>A/B Test Size Sample Calculator</h1>
-      <p>Calculate the sample sizes for your experiments</p>
+  <div class="ab-test">
+    <div class="p-5 mb-4 bg-light rounded-3 text-center">
+      <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">A/B Test Size Sample Calculator</h1>
+        <p class="fs-4">Calculate the sample sizes for your experiments</p>
+      </div>
     </div>
+
     <div>
       <h3>Setting up an AB Test: What sample size do I need?</h3>
       <p>
@@ -58,7 +61,7 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "ABTest",
   props: {
     msg: String,
   },
