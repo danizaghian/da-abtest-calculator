@@ -1,88 +1,58 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-          >babel</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
-          >Forum</a
-        >
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
-          >Community Chat</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-          >Twitter</a
-        >
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
-          >vue-router</a
-        >
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          rel="noopener"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
-          >vue-loader</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-          rel="noopener"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
+    <div>
+      <h1>A/B Test Size Sample Calculator</h1>
+      <p>Calculate the sample sizes for your experiments</p>
+    </div>
+    <div>
+      <h3>Setting up an AB Test: What sample size do I need?</h3>
+      <p>
+        Setting up a proper A/B experiment involves selecting the appropriate
+        sample size. This ensures the test is adequately powered to detect the
+        change while minimizing statistical noise. In statistical terms, we want
+        to detect the minimum detectable effect (MDE) with statistical
+        confidence. Having too few samples produces statistically ambiguous
+        results, and having too many samples can be overkill and a waste of time
+        and resources.
+      </p>
+    </div>
+    <div>
+      <h3>Baseline Conversion Rate</h3>
+      <p>
+        The preexisting or expected conversion rate of the control group. This
+        could be a click-through ra te, retention rate, or positive rating rate.
+      </p>
+    </div>
+    <div>
+      <h3>Minimum Detectable Effect</h3>
+      <p>
+        The <strong>relative</strong> minimum difference in conversion rate
+        between the test and control group we want to observe. This can be the
+        expected effect, or some minimum threshold where the experiment is not
+        worth running (ie. impact is too small to care about).
+      </p>
+    </div>
+    <div>
+      <label for="bcr">Baseline Conversion Rate (between 1% and 99%):</label>
+      <input type="range" id="bcr" name="bcr" min="1" max="99" v-model="bcr" />
+      {{ bcr }}
+    </div>
+    <div>
+      <label for="mde">Minimum Detectable Effect (between 1% and 50%):</label>
+      <input type="range" id="mde" name="mde" min="1" max="50" v-model="mde" />
+      {{ mde }}
+    </div>
+    <div>
+      <p>We want to detect a new conversion rate &lt; 6.0% or > 10.0%</p>
+    </div>
+    <div>
+      <h3>Test Size</h3>
+      <p>{{ testSize }}</p>
+      <h3>Control Size</h3>
+      <p>{{ controlSize }}</p>
+      <h3>Total Sample Size</h3>
+      <p>{{ testSize + controlSize }}</p>
+    </div>
   </div>
 </template>
 
@@ -91,6 +61,14 @@ export default {
   name: "HelloWorld",
   props: {
     msg: String,
+  },
+  data() {
+    return {
+      bcr: 1,
+      mde: 1,
+      testSize: 0,
+      controlSize: 0,
+    };
   },
 };
 </script>
