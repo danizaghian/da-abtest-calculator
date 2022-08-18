@@ -6,55 +6,97 @@
         <p class="fs-4">Calculate the sample sizes for your experiments</p>
       </div>
     </div>
-
-    <div>
-      <h3>Setting up an AB Test: What sample size do I need?</h3>
-      <p>
-        Setting up a proper A/B experiment involves selecting the appropriate
-        sample size. This ensures the test is adequately powered to detect the
-        change while minimizing statistical noise. In statistical terms, we want
-        to detect the minimum detectable effect (MDE) with statistical
-        confidence. Having too few samples produces statistically ambiguous
-        results, and having too many samples can be overkill and a waste of time
-        and resources.
-      </p>
-    </div>
-    <div>
-      <h3>Baseline Conversion Rate</h3>
-      <p>
-        The preexisting or expected conversion rate of the control group. This
-        could be a click-through ra te, retention rate, or positive rating rate.
-      </p>
-    </div>
-    <div>
-      <h3>Minimum Detectable Effect</h3>
-      <p>
-        The <strong>relative</strong> minimum difference in conversion rate
-        between the test and control group we want to observe. This can be the
-        expected effect, or some minimum threshold where the experiment is not
-        worth running (ie. impact is too small to care about).
-      </p>
-    </div>
-    <div>
-      <label for="bcr">Baseline Conversion Rate (between 1% and 99%):</label>
-      <input type="range" id="bcr" name="bcr" min="1" max="99" v-model="bcr" />
-      {{ bcr }}
-    </div>
-    <div>
-      <label for="mde">Minimum Detectable Effect (between 1% and 50%):</label>
-      <input type="range" id="mde" name="mde" min="1" max="50" v-model="mde" />
-      {{ mde }}
-    </div>
-    <div>
-      <p>We want to detect a new conversion rate &lt; 6.0% or > 10.0%</p>
-    </div>
-    <div>
-      <h3>Test Size</h3>
-      <p>{{ testSize }}</p>
-      <h3>Control Size</h3>
-      <p>{{ controlSize }}</p>
-      <h3>Total Sample Size</h3>
-      <p>{{ testSize + controlSize }}</p>
+    <div class="container">
+      <!-- Start Overview -->
+      <div class="row mb-4">
+        <h5 class="mb-3">Setting up an AB Test: What sample size do I need?</h5>
+        <p>
+          Setting up a proper A/B experiment involves selecting the appropriate
+          sample size. This ensures the test is adequately powered to detect the
+          change while minimizing statistical noise. In statistical terms, we
+          want to detect the minimum detectable effect (MDE) with statistical
+          confidence. Having too few samples produces statistically ambiguous
+          results, and having too many samples can be overkill and a waste of
+          time and resources.
+        </p>
+      </div>
+      <!-- End Overview -->
+      <!-- Start Summaries -->
+      <div class="row mb-5">
+        <div class="col">
+          <h5 class="mb-3">Baseline Conversion Rate</h5>
+          <p>
+            The preexisting or expected conversion rate of the control group.
+            This could be a click-through ra te, retention rate, or positive
+            rating rate.
+          </p>
+        </div>
+        <div class="col">
+          <h5 class="mb-3">Minimum Detectable Effect</h5>
+          <p>
+            The <strong>relative</strong> minimum difference in conversion rate
+            between the test and control group we want to observe. This can be
+            the expected effect, or some minimum threshold where the experiment
+            is not worth running (ie. impact is too small to care about).
+          </p>
+        </div>
+      </div>
+      <!-- End Summaries -->
+      <!-- Start Sliders -->
+      <div class="row mb-5">
+        <div class="col text-center">
+          <h2>{{ bcr }}</h2>
+          <!-- <label for="bcr">Baseline Conversion Rate</label><br /> -->
+          1
+          <input
+            type="range"
+            id="bcr"
+            name="bcr"
+            min="1"
+            max="99"
+            v-model="bcr"
+          />
+          99
+        </div>
+        <div class="col text-center">
+          <h2>{{ mde }}</h2>
+          <!-- <label for="mde">Minimum Detectable Effect</label><br /> -->
+          1
+          <input
+            type="range"
+            id="mde"
+            name="mde"
+            min="1"
+            max="50"
+            v-model="mde"
+          />
+          50
+        </div>
+      </div>
+      <!-- End Sliders -->
+      <!-- Start Conversion Rate -->
+      <div class="row mb-5">
+        <p class="lead text-center text-bg-light p-4">
+          We want to detect a new conversion rate &lt; 6.0% or > 10.0%
+        </p>
+      </div>
+      <!-- End Conversion Rate -->
+      <!-- Start Sizes -->
+      <div class="row text-center text-bg-light p-4 border">
+        <div class="col">
+          <h5 class="mt-3">Test Size</h5>
+          <h1>{{ testSize }}</h1>
+        </div>
+        <div class="col">
+          <h5 class="mt-3">Control Size</h5>
+          <h1>{{ controlSize }}</h1>
+        </div>
+      </div>
+      <div class="row text-center text-bg-primary p-4 border">
+        <h5 class="mt-3">Total Sample Size</h5>
+        <h1>{{ testSize + controlSize }}</h1>
+      </div>
+      <!-- End Sizes -->
     </div>
   </div>
 </template>
