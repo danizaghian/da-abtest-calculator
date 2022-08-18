@@ -3,7 +3,7 @@
     <div class="p-4 mb-5 bg-light rounded-3 text-center">
       <div class="container-fluid py-5">
         <h1 class="display-5 fw-bold">A/B Test Size Sample Calculator</h1>
-        <p class="fs-4">Calculate the sample sizes for your experiments</p>
+        <p class="fs-4 mb-0">Calculate the sample sizes for your experiments</p>
       </div>
     </div>
     <div class="container" style="max-width: 960px">
@@ -25,7 +25,7 @@
       <!-- End Overview -->
       <!-- Start Summaries -->
       <div class="row mb-5">
-        <div class="col">
+        <div class="col-xs-12 col-sm-6 mb-4">
           <h5 class="mb-3 fw-bold">Baseline Conversion Rate</h5>
           <p>
             The preexisting or expected conversion rate of the control group.
@@ -33,7 +33,7 @@
             rating rate.
           </p>
         </div>
-        <div class="col">
+        <div class="col-xs-12 col-sm-6">
           <h5 class="mb-3 fw-bold">Minimum Detectable Effect</h5>
           <p>
             The <strong>relative</strong> minimum difference in conversion rate
@@ -46,7 +46,7 @@
       <!-- End Summaries -->
       <!-- Start Sliders -->
       <div class="row mb-5">
-        <div class="col text-center">
+        <div class="col-xs-12 col-sm-6 mb-4 text-center">
           <h2 class="fw-bold">{{ bcr }}%</h2>
 
           <input
@@ -58,7 +58,7 @@
             v-model="bcr"
           />
         </div>
-        <div class="col text-center">
+        <div class="col-xs-12 col-sm-6 mb-4 text-center">
           <h2 class="fw-bold">{{ mde }}%</h2>
           <!-- <label for="mde">Minimum Detectable Effect</label><br /> -->
 
