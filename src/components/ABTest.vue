@@ -1,12 +1,12 @@
 <template>
   <div class="ab-test">
-    <div class="p-5 mb-5 bg-light rounded-3 text-center">
+    <div class="p-4 mb-5 bg-light rounded-3 text-center">
       <div class="container-fluid py-5">
         <h1 class="display-5 fw-bold">A/B Test Size Sample Calculator</h1>
         <p class="fs-4">Calculate the sample sizes for your experiments</p>
       </div>
     </div>
-    <div class="container">
+    <div class="container" style="max-width: 960px">
       <!-- Start Overview -->
       <div class="row mb-4">
         <h5 class="mb-3 fw-bold">
