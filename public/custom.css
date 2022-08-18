@@ -1,0 +1,14 @@
+.text-bg-podium {
+    color: #fff !important;
+    background-color: RGBA(105, 219, 245, var(--bs-bg-opacity, 1)) !important;
+  }
+
+input[type=range]::-webkit-slider-thumb {
+    background: RGBA(105, 219, 245, var(--bs-bg-opacity, 1));
+}
+input[type=range]::-moz-range-thumb {
+    background: RGBA(105, 219, 245, var(--bs-bg-opacity, 1));
+}
+input[type=range]::-ms-thumb {
+    background: RGBA(105, 219, 245, var(--bs-bg-opacity, 1));
+}

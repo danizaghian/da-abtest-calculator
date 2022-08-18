@@ -46,31 +46,28 @@
       <div class="row mb-5">
         <div class="col text-center">
           <h2>{{ bcr }}</h2>
-          <!-- <label for="bcr">Baseline Conversion Rate</label><br /> -->
-          1
+
           <input
             type="range"
+            class="form-range p-4"
             id="bcr"
-            name="bcr"
             min="1"
             max="99"
             v-model="bcr"
           />
-          99
         </div>
         <div class="col text-center">
           <h2>{{ mde }}</h2>
           <!-- <label for="mde">Minimum Detectable Effect</label><br /> -->
-          1
+
           <input
             type="range"
+            class="form-range p-4"
             id="mde"
-            name="mde"
             min="1"
             max="50"
             v-model="mde"
           />
-          50
         </div>
       </div>
       <!-- End Sliders -->
@@ -92,7 +89,7 @@
           <h1>{{ controlSize }}</h1>
         </div>
       </div>
-      <div class="row text-center text-bg-primary p-4 border mb-5">
+      <div class="row text-center text-bg-podium p-4 border mb-5">
         <h5 class="mt-3">Total Sample Size</h5>
         <h1>{{ testSize + controlSize }}</h1>
       </div>
