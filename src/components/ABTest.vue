@@ -1,6 +1,6 @@
 <template>
   <div class="ab-test">
-    <div class="p-5 mb-4 bg-light rounded-3 text-center">
+    <div class="p-5 mb-5 bg-light rounded-3 text-center">
       <div class="container-fluid py-5">
         <h1 class="display-5 fw-bold">A/B Test Size Sample Calculator</h1>
         <p class="fs-4">Calculate the sample sizes for your experiments</p>
@@ -92,7 +92,7 @@
           <h1>{{ controlSize }}</h1>
         </div>
       </div>
-      <div class="row text-center text-bg-primary p-4 border">
+      <div class="row text-center text-bg-primary p-4 border mb-5">
         <h5 class="mt-3">Total Sample Size</h5>
         <h1>{{ testSize + controlSize }}</h1>
       </div>
