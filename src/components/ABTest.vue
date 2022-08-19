@@ -78,8 +78,10 @@
         <p class="lead text-center text-bg-light p-4">
           We want to detect a new conversion rate &lt;
           <strong class="text-podium">{{ calcLowerBound() }}%</strong>
-          or >
-          <strong class="text-podium">{{ calcUpperBound() }}%</strong>
+          <span v-if="calcUpperBound() <= 100">
+            or >
+            <strong class="text-podium">{{ calcUpperBound() }}%</strong>
+          </span>
         </p>
       </div>
       <!-- End Conversion Rate -->
