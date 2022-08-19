@@ -77,28 +77,33 @@
       <div class="row mb-5">
         <p class="lead text-center text-bg-light p-4">
           We want to detect a new conversion rate &lt;
-          <strong class="text-podium">{{ calcLowerBound() }}%</strong>
-          <span v-if="calcUpperBound() <= 100">
+          <strong class="text-podium"
+            >{{ calcLowerBound().toFixed(1) }}%</strong
+          >
+          <span v-if="calcUpperBound().toFixed(1) < 100">
             or >
-            <strong class="text-podium">{{ calcUpperBound() }}%</strong>
+            <strong class="text-podium"
+              >{{ calcUpperBound().toFixed(1) }}%</strong
+            >
           </span>
         </p>
       </div>
       <!-- End Conversion Rate -->
       <!-- Start Sizes -->
+      {{ calcCriticalNorm(bcr / 100, calcUpperBound(), calcLowerBound()) }}
       <div class="row text-center text-bg-light p-4 border">
         <div class="col">
           <h5 class="mt-3">Test Size</h5>
-          <h1>{{ testSize }}K</h1>
+          <h1>{{ nGroup }}K</h1>
         </div>
         <div class="col">
           <h5 class="mt-3">Control Size</h5>
-          <h1>{{ controlSize }}K</h1>
+          <h1>{{ nGroup }}K</h1>
         </div>
       </div>
       <div class="row text-center text-bg-podium p-4 border mb-5">
         <h5 class="mt-3">Total Sample Size</h5>
-        <h1>{{ testSize + controlSize }}K</h1>
+        <h1>{{ nGroup * 2 }}K</h1>
       </div>
       <!-- End Sizes -->
     </div>
@@ -115,20 +120,120 @@ export default {
     return {
       bcr: 1,
       mde: 1,
-      testSize: 0,
-      controlSize: 0,
+      nGroup: 0,
     };
   },
+  created: function () {},
   methods: {
     calcLowerBound: function () {
       let bcrPercentage = this.bcr / 100;
       let mdePercentage = this.mde / 100;
-      return (100 * (bcrPercentage * (1 - mdePercentage))).toFixed(1);
+      return 100 * (bcrPercentage * (1 - mdePercentage));
     },
     calcUpperBound: function () {
       let bcrPercentage = this.bcr / 100;
       let mdePercentage = this.mde / 100;
-      return (100 * (bcrPercentage * (1 + mdePercentage))).toFixed(1);
+      return 100 * (bcrPercentage * (1 + mdePercentage));
+    },
+    normInv: function (p) {
+      // Implements Acklam’s method for approximating the inverse cumulative
+      // normal distribution. See resources:
+      // https://stackedboxes.org/2017/05/01/acklams-normal-quantile-function/
+      // https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4630740
+
+      // Coefficients in polynomial approximations.
+      let a6 = -39.69683028665376;
+      let a5 = 220.9460984245205;
+      let a4 = -275.9285104469687;
+      let a3 = 138.357751867269;
+      let a2 = -30.66479806614716;
+      let a1 = 2.506628277459239;
+
+      let b5 = -54.47609879822406;
+      let b4 = 161.5858368580409;
+      let b3 = -155.6989798598866;
+      let b2 = 66.80131188771972;
+      let b1 = -13.28068155288572;
+
+      let c6 = -0.007784894002430293;
+      let c5 = -0.3223964580411365;
+      let c4 = -2.400758277161838;
+      let c3 = -2.549732539343734;
+      let c2 = 4.374664141464968;
+      let c1 = 2.938163982698783;
+
+      let d4 = 0.007784695709041462;
+      let d3 = 0.3224671290700398;
+      let d2 = 2.445134137142996;
+      let d1 = 3.754408661907416;
+
+      let q;
+      let r;
+      let l;
+      let m;
+      let result;
+
+      // Approximation for lower region.
+      if (0 < p && p < 0.02425) {
+        q = Math.sqrt(-2 * Math.log(p));
+        l = ((((c6 * q + c5) * q + c4) * q + c3) * q + c2) * q + c1;
+        m = (((d4 * q + d3) * q + d2) * q + d1) * q + 1;
+        result = l / m;
+
+        // Approximation for central region.
+      } else if (0.02425 <= p && p <= 0.97575) {
+        q = p - 0.5;
+        r = q * q;
+        l = (((((a6 * r + a5) * r + a4) * r + a3) * r + a2) * r + a1) * q;
+        m = ((((b5 * r + b4) * r + b3) * r + b2) * r + b1) * r + 1;
+        result = l / m;
+
+        // Approximation for upper region.
+      } else if (0.97575 < p && p < 1) {
+        q = Math.sqrt(-2 * Math.log(1 - p));
+        l = ((((c6 * q + c5) * q + c4) * q + c3) * q + c2) * q + c1;
+        m = (((d4 * q + d3) * q + d2) * q + d1) * q + 1;
+        result = -l / m;
+      } else {
+        result = 0;
+      }
+      return result;
+    },
+    calcCriticalNorm: function (bcr, ub, lb) {
+      // console.log(`bcr: ${bcr}`);
+      ub = ub / 100;
+      lb = lb / 100;
+      // console.log(`ub: ${ub}`);
+      // console.log(`lb: ${lb}`);
+      // ADVANCED: alpha has a toggle between 0.01 - 0.1
+      let alpha = 0.05;
+      // ADVANCED: beta has a toggle between 0.05 - 0.38
+      let beta = 0.2;
+      let zA = this.normInv(1 - alpha);
+      let zB = this.normInv(beta);
+      // console.log(`zA: ${zA}`);
+      // console.log(`zB: ${zB}`);
+      // calculate standard deviations
+      let sdA = Math.sqrt(2 * bcr * (1 - bcr));
+      // console.log(`sdA: ${sdA}`);
+      let sdB1 = Math.sqrt(bcr * (1 - bcr) + lb * (1 - lb));
+      let sdB2 = Math.sqrt(bcr * (1 - bcr) + ub * (1 - ub));
+      // console.log(`sdB1: ${sdB1}`);
+      // console.log(`sdB2: ${sdB2}`);
+      // calculate sample size required of each group
+      // lb: bcr cannot be too close to 0
+      // ub: bcr cannot be too close to 0
+      let nB1 = Math.pow((zA * sdA - zB * sdB1) / (lb - bcr), 2);
+      // console.log(`nb1: ${nB1}`);
+      let nB2;
+      if (ub >= 1) {
+        nB2 = 0;
+      } else {
+        nB2 = Math.pow((zA * sdA - zB * sdB2) / (ub - bcr), 2);
+      }
+      // console.log(`nB2: ${nB2}`);
+      this.nGroup = Math.ceil(Math.max(nB1, nB2));
+      return this.nGroup;
     },
   },
 };
