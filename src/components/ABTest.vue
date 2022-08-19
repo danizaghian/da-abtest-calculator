@@ -77,8 +77,9 @@
       <div class="row mb-5">
         <p class="lead text-center text-bg-light p-4">
           We want to detect a new conversion rate &lt;
-          <strong class="text-podium">6.0%</strong> or >
-          <strong class="text-podium">10.0%</strong>
+          <strong class="text-podium">{{ calcLowerBound() }}%</strong>
+          or >
+          <strong class="text-podium">{{ calcUpperBound() }}%</strong>
         </p>
       </div>
       <!-- End Conversion Rate -->
@@ -115,6 +116,18 @@ export default {
       testSize: 0,
       controlSize: 0,
     };
+  },
+  methods: {
+    calcLowerBound: function () {
+      let bcrPercentage = this.bcr / 100;
+      let mdePercentage = this.mde / 100;
+      return (100 * (bcrPercentage * (1 - mdePercentage))).toFixed(1);
+    },
+    calcUpperBound: function () {
+      let bcrPercentage = this.bcr / 100;
+      let mdePercentage = this.mde / 100;
+      return (100 * (bcrPercentage * (1 + mdePercentage))).toFixed(1);
+    },
   },
 };
 </script>
