@@ -94,16 +94,16 @@
       <div class="row text-center text-bg-light p-4 border">
         <div class="col">
           <h5 class="mt-3">Test Size</h5>
-          <h1>{{ nGroup }}K</h1>
+          <h1>{{ formatDisplaySize(nGroup) }}</h1>
         </div>
         <div class="col">
           <h5 class="mt-3">Control Size</h5>
-          <h1>{{ nGroup }}K</h1>
+          <h1>{{ formatDisplaySize(nGroup) }}</h1>
         </div>
       </div>
       <div class="row text-center text-bg-podium p-4 border mb-5">
         <h5 class="mt-3">Total Sample Size</h5>
-        <h1>{{ nGroup * 2 }}K</h1>
+        <h1>{{ formatDisplaySize(nGroup * 2) }}</h1>
       </div>
       <!-- End Sizes -->
     </div>
@@ -233,7 +233,28 @@ export default {
       }
       // console.log(`nB2: ${nB2}`);
       this.nGroup = Math.ceil(Math.max(nB1, nB2));
-      return this.nGroup;
+      // return this.nGroup;
+    },
+    formatDisplaySize: function (size) {
+      // always round up: do all math first, then do rounding.
+      // Digits should always be 1-3 digits total
+      // 0 - 999 => display number
+      // 12,532 => 12.6K
+      // 1000 - 999,999 => 1.2K, 12.5K, 684K
+      // 1,000,000 + => 12.2M, 24.1M
+      console.log(size);
+      if (size > 10000000) {
+        size = `${Number(size.toPrecision(3)).toString().slice(0, 3) / 10}M`;
+      } else if (size > 999999 && size < 10000000) {
+        size = `${Number(size.toPrecision(3)).toString().slice(0, 2) / 10}M`;
+      } else if (size > 100000 && size <= 999999) {
+        size = `${Number(size.toPrecision(3)).toString().slice(0, 3)}K`;
+      } else if (size > 10000 && size <= 99999) {
+        size = `${Number(size.toPrecision(3)).toString().slice(0, 3) / 10}K`;
+      } else if (size > 1000 && size <= 9999) {
+        size = `${Number(size.toPrecision(3)).toString().slice(0, 3) / 100}K`;
+      }
+      return size;
     },
   },
 };
