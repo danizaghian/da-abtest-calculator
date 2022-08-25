@@ -242,17 +242,26 @@ export default {
       // 12,532 => 12.6K
       // 1000 - 999,999 => 1.2K, 12.5K, 684K
       // 1,000,000 + => 12.2M, 24.1M
-      console.log(size);
+      // console.log(size);
       if (size > 10000000) {
         size = `${Number(size.toPrecision(3)).toString().slice(0, 3) / 10}M`;
-      } else if (size > 999999 && size < 10000000) {
-        size = `${Number(size.toPrecision(3)).toString().slice(0, 2) / 10}M`;
-      } else if (size > 100000 && size <= 999999) {
+      } else if (size >= 999999 && size < 10000000) {
+        size = `${(size / 1000000).toPrecision(2)}M`;
+      } else if (size >= 100000 && size <= 999999) {
         size = `${Number(size.toPrecision(3)).toString().slice(0, 3)}K`;
-      } else if (size > 10000 && size <= 99999) {
+      } else if (size >= 10000 && size <= 99999) {
         size = `${Number(size.toPrecision(3)).toString().slice(0, 3) / 10}K`;
-      } else if (size > 1000 && size <= 9999) {
-        size = `${Number(size.toPrecision(3)).toString().slice(0, 3) / 100}K`;
+      } else if (size >= 1000 && size <= 9999) {
+        if (
+          (Number(size.toPrecision(3)).toString().slice(0, 2) / 10).toString()
+            .length < 2
+        ) {
+          size = `${
+            Number(size.toPrecision(3)).toString().slice(0, 2) / 10
+          }.0K`;
+        } else {
+          size = `${Number(size.toPrecision(3)).toString().slice(0, 2) / 10}K`;
+        }
       }
       return size;
     },
